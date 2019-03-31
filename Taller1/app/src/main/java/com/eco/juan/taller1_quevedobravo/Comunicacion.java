@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Observable;
 
 public class Comunicacion extends Observable implements Runnable {
@@ -35,7 +36,7 @@ public class Comunicacion extends Observable implements Runnable {
             try {
                 if(!conectado) {
 
-                    socket = new Socket(InetAddress.getByName("192.168.1.42"), 5000);
+                    socket = new Socket(InetAddress.getByName("172.30.182.176"), 5000);
                     entrada = new DataInputStream(socket.getInputStream());
                     salida = new DataOutputStream(socket.getOutputStream());
                     conectado = true;
@@ -43,6 +44,8 @@ public class Comunicacion extends Observable implements Runnable {
                     recibir();
                     Thread.sleep(33);
                 }
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
