@@ -2,8 +2,10 @@ package quevedobravo;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Observable;
 
 public class Comunicacion extends Observable implements Runnable {
@@ -11,11 +13,16 @@ public class Comunicacion extends Observable implements Runnable {
 	private DataInputStream entrada;
 	private DataOutputStream salida;
 	private boolean conectado;
-
+	private InetAddress ip;
 	private static Comunicacion ref;
 
 	private Comunicacion() {
 		conectado = false;
+		try {
+			ip = InetAddress.getLocalHost();
+		} catch(UnknownHostException e) {
+			e.printStackTrace();
+		}
 		System.out.println("Esperando conexion");
 	}
 
@@ -72,5 +79,9 @@ public class Comunicacion extends Observable implements Runnable {
 			e.printStackTrace();
 		}
 
+	}
+	
+	public InetAddress getIp() {
+		return ip;
 	}
 }
