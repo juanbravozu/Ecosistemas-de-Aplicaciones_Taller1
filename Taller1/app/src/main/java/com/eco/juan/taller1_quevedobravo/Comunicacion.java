@@ -14,7 +14,7 @@ public class Comunicacion extends Observable implements Runnable {
     private DataInputStream entrada;
     private DataOutputStream salida;
     private boolean conectado;
-
+    private static String ip;
     private static Comunicacion ref;
 
     private Comunicacion() {
@@ -23,9 +23,15 @@ public class Comunicacion extends Observable implements Runnable {
     }
 
     public static Comunicacion getRef() {
+
+        return ref;
+    }
+
+    public static Comunicacion getRef(String dir) {
         if(ref == null) {
             ref = new Comunicacion();
             Thread t = new Thread(ref);
+            ip = dir;
             t.start();
         }
         return ref;
@@ -36,7 +42,7 @@ public class Comunicacion extends Observable implements Runnable {
             try {
                 if(!conectado) {
 
-                    socket = new Socket(InetAddress.getByName("172.30.182.176"), 5000);
+                    socket = new Socket(InetAddress.getByName(ip), 5000);
                     entrada = new DataInputStream(socket.getInputStream());
                     salida = new DataOutputStream(socket.getOutputStream());
                     conectado = true;

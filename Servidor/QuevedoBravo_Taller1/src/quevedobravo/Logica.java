@@ -44,6 +44,8 @@ public class Logica implements Observer {
 
 	public void update(Observable arg0, Object arg1) {
 		String mensaje[] = (String[]) arg1;
+		
+		if(mensaje[0].matches("Crear"))System.out.println(mensaje[1]);
 	}
 
 }
