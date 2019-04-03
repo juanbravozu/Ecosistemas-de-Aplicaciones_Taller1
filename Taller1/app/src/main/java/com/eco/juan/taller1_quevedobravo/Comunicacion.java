@@ -29,10 +29,11 @@ public class Comunicacion extends Observable implements Runnable {
 
     public static Comunicacion getRef(String dir) {
         if(ref == null) {
+            ip = dir;
             ref = new Comunicacion();
             Thread t = new Thread(ref);
-            ip = dir;
             t.start();
+
         }
         return ref;
     }
