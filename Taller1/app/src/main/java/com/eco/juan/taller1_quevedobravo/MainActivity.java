@@ -1,5 +1,6 @@
 package com.eco.juan.taller1_quevedobravo;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity  {
                             try {
                                 Thread.sleep(500);
                                 ref.enviar("Crear: :"+nombrePj);
+                                Intent i = new Intent(MainActivity.this, Control.class);
+                                startActivity(i);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }

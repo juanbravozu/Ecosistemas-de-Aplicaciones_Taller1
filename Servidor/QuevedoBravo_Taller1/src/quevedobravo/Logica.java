@@ -68,7 +68,7 @@ public class Logica implements Observer {
 	public void update(Observable arg0, Object arg1) {
 		String mensaje[] = (String[]) arg1;
 		
-		if(mensaje[0].matches("Crear")) {
+		if(mensaje[0].matches("Crear") && pantalla == 0) {
 			nombre = mensaje[1];
 			System.out.println(nombre);
 			new Thread(new Runnable() {
@@ -90,7 +90,7 @@ public class Logica implements Observer {
 					}
 				}
 			}).start();
-		} else if(mensaje[0].matches("Atacar")) {
+		} else if(mensaje[0].matches("A")) {
 			switch(pantalla) {
 			case 1:
 				if(opacidad == 255) {
@@ -113,6 +113,8 @@ public class Logica implements Observer {
 					}).start();
 				}
 			}
+		} else {
+			System.out.println(mensaje.toString());
 		}
 	}
 
