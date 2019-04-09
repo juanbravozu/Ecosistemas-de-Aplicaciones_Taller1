@@ -29,12 +29,25 @@ public class MainActivity extends AppCompatActivity  {
 
         conectar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String nombrePj = nombre.getText().toString();
-                String direccion = ip.getText().toString();
+                final String nombrePj = nombre.getText().toString();
+                final String direccion = ip.getText().toString();
 
-                ref = Comunicacion.getRef(direccion);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
 
-                ref.enviar("Crear: :"+nombrePj);
+                            ref = Comunicacion.getRef(direccion);
+                            try {
+                                Thread.sleep(500);
+                                ref.enviar("Crear: :"+nombrePj);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+
+                    }
+                }).start();
+
             }
         });
     }

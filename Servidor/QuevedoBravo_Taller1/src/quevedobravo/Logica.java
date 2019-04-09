@@ -15,6 +15,12 @@ public class Logica implements Observer {
 	private SoundFile song1;
 	private String ip;
 	private String nombre;
+	
+	/**
+	 * Pantalla 0 = Pantalla ip
+	 * Pantalla 1 = Introduccion
+	 * Pantalla 2 = Primer nivel
+	 */
 	private int pantalla;
 	private int opacidad;
 	
@@ -54,7 +60,7 @@ public class Logica implements Observer {
 			
 		case 1:
 			app.fill(255, opacidad);
-			app.text("Existe una leyenda olvidada en el tiempo, una leyenda sobre un héroe que acabó con la oscuridad antes de que esta pudiera actuar, "+nombre+" es el nombre de este héroe.", 300, 100, 600, 700);
+			app.text("Existe una leyenda olvidada en el tiempo, una leyenda sobre un héroe que acabó con la oscuridad antes de que esta pudiera actuar. "+nombre+" es el nombre de este héroe.", 300, 100, 600, 700);
 			if(opacidad < 255)opacidad++;
 		}
 	}
@@ -84,6 +90,29 @@ public class Logica implements Observer {
 					}
 				}
 			}).start();
+		} else if(mensaje[0].matches("Atacar")) {
+			switch(pantalla) {
+			case 1:
+				if(opacidad == 255) {
+					new Thread(()->{
+						boolean vivo = true;
+						while(vivo) {
+							try {
+								if(opacidad>0) {
+									opacidad--;
+								} else {
+									pantalla = 2;
+									vivo = false;
+								}								
+								Thread.sleep(17);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+						
+					}).start();
+				}
+			}
 		}
 	}
 
