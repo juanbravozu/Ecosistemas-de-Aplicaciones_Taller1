@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="src/libs/javamp3-1.0.3.jar"/>
 	<classpathentry kind="lib" path="src/libs/jsyn-20171016.jar"/>
 	<classpathentry kind="lib" path="src/libs/sound.jar"/>
+	<classpathentry kind="lib" path="src/libs/gifAnimation.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

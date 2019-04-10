@@ -19,10 +19,11 @@ public class Logica implements Observer {
 	/**
 	 * Pantalla 0 = Pantalla ip
 	 * Pantalla 1 = Introduccion
-	 * Pantalla 2 = Primer nivel
+	 * Pantalla 2 = Juego
 	 */
 	private int pantalla;
 	private int opacidad;
+	private Mundo m;
 	
 	public Logica(PApplet app) {
 		this.app = app;
@@ -36,7 +37,6 @@ public class Logica implements Observer {
 		app.textFont(fuente);
 		app.background(0);
 		app.text("Cargando...", app.width/2, app.height/2);
-		System.out.println("Cargndo...");
 		
 		song1 = new SoundFile(app, "05 - Forbidden Steps.mp3");
 		song1.loop();
@@ -44,6 +44,7 @@ public class Logica implements Observer {
 		ref = Comunicacion.getRef();
 		ref.addObserver(this);
 		ip = ref.getIp().getHostAddress();
+		m = null;
 	}
 
 	public void pintar() {
@@ -62,6 +63,14 @@ public class Logica implements Observer {
 			app.fill(255, opacidad);
 			app.text("Existe una leyenda olvidada en el tiempo, una leyenda sobre un héroe que acabó con la oscuridad antes de que esta pudiera actuar. "+nombre+" es el nombre de este héroe.", 300, 100, 600, 700);
 			if(opacidad < 255)opacidad++;
+			break;
+			
+		case 2:
+			if(m == null) {
+				m = new Mundo(app);
+			} else {
+				m.pintar();
+			}
 		}
 	}
 
@@ -91,30 +100,24 @@ public class Logica implements Observer {
 				}
 			}).start();
 		} else if(mensaje[0].matches("A")) {
-			switch(pantalla) {
-			case 1:
-				if(opacidad == 255) {
-					new Thread(()->{
-						boolean vivo = true;
-						while(vivo) {
-							try {
-								if(opacidad>0) {
-									opacidad--;
-								} else {
-									pantalla = 2;
-									vivo = false;
-								}								
-								Thread.sleep(17);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
+			if(opacidad == 255) {
+				new Thread(()->{
+					boolean vivo = true;
+					while(vivo) {
+						try {
+							if(opacidad>0) {									
+								opacidad--;
+							} else {
+								pantalla = 2;
+								vivo = false;
+							}								
+							Thread.sleep(17);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
 						}
-						
-					}).start();
-				}
+					}	
+				}).start();
 			}
-		} else {
-			System.out.println(mensaje.toString());
 		}
 	}
 
