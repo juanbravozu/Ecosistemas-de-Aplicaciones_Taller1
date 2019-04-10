@@ -34,10 +34,8 @@ public class Control extends AppCompatActivity implements Observer {
 
         analogo.setOnMoveListener(new JoystickView.OnMoveListener() {
             public void onMove(int angle, int strength) {
-                if(strength > 30) {
-                    String msg = "Mover: :"+angle;
-                    ref.enviar(msg);
-                }
+                String msg = "Mover: :"+angle+": :"+strength;
+                ref.enviar(msg);
             }
         });
 

@@ -8,14 +8,14 @@ public class Jugador {
 
 	private PApplet app;
 	private PVector pos;
+	private PVector vel;
 	private int dir; //0=Derecha 1=Izquierda
 	private Gif[] pj;//0=QuietoDerecha 1=QuietoIzquierda 2=CaminandoDerecha 3=CaminandoIzquierda
-	private boolean caminando;
 	
 	public Jugador(PApplet app) {
 		this.app = app;
 		pos = new PVector(app.width/2, app.height/2);
-		caminando = false;
+		vel = new PVector(0, 0);
 		dir = 0;
 		
 		pj = new Gif[4];
@@ -26,38 +26,33 @@ public class Jugador {
 	}
 	
 	public void pintar() {
+	
 		if(dir == 0) {
-			if(caminando) {
+			if(vel.mag()>0) {
 				app.image(pj[2], pos.x, pos.y);
 			} else {
 				app.image(pj[0], pos.x, pos.y);
 			}
 		} else {
-			if(caminando) {
+			if(vel.mag()>0) {
 				app.image(pj[3], pos.x, pos.y);
 			} else {
 				app.image(pj[1], pos.x, pos.y);				
 			}
 		}
 		
-		if(!caminando) {
-			
-		}
-		
-		if(!caminando) {
-			System.out.println(caminando);
-		}
-		caminando = false;
-		
 	}
 	
-	public void mover(PVector vel) {
+	public void mover() {
 		pos.add(vel);
 		if(vel.x >= 0) {
 			dir = 0;
 		} else {
 			dir = 1;
 		}
-		caminando = true;
+	}
+	
+	public void setVel(PVector vel) {
+		this.vel = vel;
 	}
 }

@@ -89,7 +89,11 @@ public class Logica implements Observer {
 							if(opacidad == 0) {
 								vivo = false;
 							} else {
-								opacidad--;
+								if(opacidad-2 >= 0) {
+									opacidad-=2;
+								} else {
+									opacidad = 0;
+								}
 							}
 							Thread.sleep(17);
 						} catch (InterruptedException e) {
@@ -105,8 +109,12 @@ public class Logica implements Observer {
 					boolean vivo = true;
 					while(vivo) {
 						try {
-							if(opacidad>0) {									
-								opacidad--;
+							if(opacidad>0) {
+								if(opacidad-2 >= 0) {
+									opacidad-=2;
+								} else {
+									opacidad = 0;
+								}								
 							} else {
 								pantalla = 2;
 								vivo = false;

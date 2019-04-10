@@ -17,6 +17,13 @@ public class Mundo implements Observer {
 	
 	public Mundo(PApplet app) {
 		this.app = app;
+		
+		app.textAlign(app.CENTER, app.TOP);
+		app.background(0);
+		app.text("Cargando...", app.width/2, app.height/2);
+		
+		jug = new Jugador(app);
+		
 		ref = Comunicacion.getRef();
 		ref.addObserver(this);
 		
@@ -26,9 +33,7 @@ public class Mundo implements Observer {
 		
 		for(int i = 0; i < fondos.length; i++) {
 			fondos[i] = app.loadImage("fondo"+i+".png");
-		}
-		
-		jug = new Jugador(app);
+		}			
 	}
 	
 	public void pintar() {
@@ -36,23 +41,27 @@ public class Mundo implements Observer {
 		case 1:
 			app.image(fondos[0], 0, 0);
 			jug.pintar();
+			app.image(fondos[1], 0, 0);
 			break;
-			
-			
 		}
 	}
 
 	public void update(Observable arg0, Object arg1) {
 		String mensaje[] = (String[]) arg1;
+		
 		if(mensaje[0].matches("Mover")) {
-			System.out.println("Mover"+" "+mensaje[1]);
-			float ang = app.radians(Integer.parseInt(mensaje[1]));
-			PVector vel = PVector.fromAngle(-ang);
-			vel.normalize();
-			vel.mult(4);
-			jug.mover(vel);
-			app.stroke(255);
-			app.line(app.width/2, app.height/2, app.width/2+vel.x, app.height/2+vel.y);
+			if(Integer.parseInt(mensaje[2]) > 30) {
+				float ang = app.radians(Integer.parseInt(mensaje[1]));	
+				PVector vel = PVector.fromAngle(-ang);
+				vel.normalize();
+				vel.mult(6);
+				jug.setVel(vel);
+				jug.mover();				
+			} else {
+				PVector vel = new PVector(0, 0);
+				jug.setVel(vel);
+			}
+			
 		}
 	}
 	
