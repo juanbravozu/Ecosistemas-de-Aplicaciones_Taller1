@@ -19,13 +19,16 @@ public class Mundo implements Observer {
 	 * 2=Arboles Nivel 1
 	 */
 	private PImage[] fondos;
+	private PImage[] ui;
 	private int nivel;
+	private int tiempo;
 	private Jugador jug;
 	
 	public Mundo(PApplet app) {
 		this.app = app;
 		
 		iniciado = false;
+		tiempo = 120;
 		app.textAlign(app.CENTER, app.TOP);
 		app.background(0);
 		app.text("Cargando...", app.width/2, app.height/2);
@@ -38,6 +41,10 @@ public class Mundo implements Observer {
 		nivel = 1;
 		
 		fondos = new PImage[3];
+		ui = new PImage[2];
+		for (int i = 0; i < ui.length; i++) {
+			ui[i] = app.loadImage("barra"+i+".png");
+		}
 		
 		for(int i = 0; i < fondos.length; i++) {
 			fondos[i] = app.loadImage("fondo"+i+".png");
@@ -50,6 +57,13 @@ public class Mundo implements Observer {
 			app.image(fondos[1], 0, 0);
 			jug.pintar();
 			app.image(fondos[2], 0, 0);
+			app.fill(200, 0, 0);
+			app.rect(27, 16, jug.getVida()*43, 16);
+			app.image(ui[0], 0, 10);
+			app.fill(50, 84, 97);
+			app.rect(27,46, app.map(tiempo, 0, 120, 0, 212), 16);
+			app.image(ui[1], 0, 40);
+			if(app.frameCount%60 == 0)tiempo--;
 			break;
 		}
 	}
@@ -80,7 +94,11 @@ public class Mundo implements Observer {
 				}
 				
 			}
+			
+			if(mensaje[0].matches("A"))jug.atacar();
 		}
+		
+		
 		System.out.println(mensaje[0]);
 	}
 	

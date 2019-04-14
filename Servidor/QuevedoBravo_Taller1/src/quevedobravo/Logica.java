@@ -29,7 +29,7 @@ public class Logica implements Observer {
 		this.app = app;
 		
 		
-		pantalla = 0;
+		pantalla = 2;
 		opacidad = 255;
 		fuente = app.loadFont("pixellari-30.vlw");
 		
@@ -99,7 +99,7 @@ public class Logica implements Observer {
 				}
 			}).start();
 		} else if(mensaje[0].matches("A")) {
-			if(opacidad == 255) {
+			if(pantalla==1) {
 				new Thread(()->{
 					while(true) {
 						try {
