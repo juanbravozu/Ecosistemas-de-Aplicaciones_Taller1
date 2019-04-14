@@ -44,7 +44,7 @@ public class Logica implements Observer {
 		ref = Comunicacion.getRef();
 		ref.addObserver(this);
 		ip = ref.getIp().getHostAddress();
-		m = null;
+		m = new Mundo(app);
 	}
 
 	public void pintar() {
@@ -66,8 +66,8 @@ public class Logica implements Observer {
 			break;
 			
 		case 2:
-			if(m == null) {
-				m = new Mundo(app);
+			if(!m.getIniciado()) {
+				m.setIniciado(true);
 			} else {
 				m.pintar();
 			}
@@ -82,18 +82,13 @@ public class Logica implements Observer {
 			System.out.println(nombre);
 			new Thread(new Runnable() {
 				public void run() {
-					boolean vivo = true;
-					while(vivo) {
+					while(true) {
 						try {
-							
-							if(opacidad == 0) {
-								vivo = false;
-							} else {
-								if(opacidad-2 >= 0) {
-									opacidad-=2;
-								} else {
-									opacidad = 0;
-								}
+							opacidad -= 2;
+							System.out.println(opacidad);
+							if(opacidad <= 0) {
+								opacidad = 0;
+								break;
 							}
 							Thread.sleep(17);
 						} catch (InterruptedException e) {
@@ -106,19 +101,16 @@ public class Logica implements Observer {
 		} else if(mensaje[0].matches("A")) {
 			if(opacidad == 255) {
 				new Thread(()->{
-					boolean vivo = true;
-					while(vivo) {
+					while(true) {
 						try {
-							if(opacidad>0) {
-								if(opacidad-2 >= 0) {
-									opacidad-=2;
-								} else {
-									opacidad = 0;
-								}								
-							} else {
+							opacidad-=2;
+							System.out.println(opacidad);
+							if(opacidad<=0) {
+								opacidad = 0;
 								pantalla = 2;
-								vivo = false;
-							}								
+								break;
+							}
+							
 							Thread.sleep(17);
 						} catch (InterruptedException e) {
 							e.printStackTrace();

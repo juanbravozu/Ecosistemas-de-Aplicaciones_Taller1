@@ -55,4 +55,8 @@ public class Jugador {
 	public void setVel(PVector vel) {
 		this.vel = vel;
 	}
+	
+	public PVector getPos() {
+		return pos;
+	}
 }

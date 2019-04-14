@@ -4,47 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fondocontrol"
     tools:context=".Control"
     tools:layout_editor_absoluteY="25dp">
 
     <io.github.controlwear.virtual.joystick.android.JoystickView xmlns:custom="http://schemas.android.com/apk/res-auto"
         android:id="@+id/jv_analogo_control"
-        android:layout_width="257dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="183dp"
+        android:layout_width="373dp"
+        android:layout_height="288dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="147dp"
+        android:layout_marginBottom="26dp"
         custom:JV_backgroundColor="#4e515680"
-        custom:JV_borderColor="#00796B99"
+        custom:JV_borderColor="@color/grey"
         custom:JV_borderWidth="4dp"
         custom:JV_buttonImage="@drawable/analogo"
-        custom:JV_buttonSizeRatio="25%"
+        custom:JV_buttonSizeRatio="30%"
         custom:JV_fixedCenter="false"
         custom:layout_constraintBottom_toBottomOf="parent"
         custom:layout_constraintEnd_toStartOf="@+id/btn_A_control"
-        custom:layout_constraintStart_toStartOf="parent"
-        custom:layout_constraintTop_toTopOf="parent"
-        custom:layout_constraintVertical_bias="0.753" />
+        custom:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
+
         android:id="@+id/btn_B_control"
         android:layout_width="0dp"
         android:layout_height="100dp"
-        android:layout_marginTop="152dp"
-        android:layout_marginEnd="65dp"
+        android:layout_marginTop="140dp"
+        android:layout_marginEnd="97dp"
+        android:backgroundTint="@color/black"
+        android:src="@drawable/boton_b"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_A_control"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/b" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/btn_A_control"
         android:layout_width="0dp"
         android:layout_height="100dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="12dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="14dp"
+        android:backgroundTint="@color/black"
+        android:src="@drawable/boton_a"
         app:layout_constraintEnd_toStartOf="@+id/btn_B_control"
         app:layout_constraintStart_toEndOf="@+id/jv_analogo_control"
-        app:layout_constraintTop_toTopOf="@+id/btn_B_control"
-        app:srcCompat="@drawable/a" />
+        app:layout_constraintTop_toTopOf="@+id/btn_B_control" />
 
 </android.support.constraint.ConstraintLayout>
