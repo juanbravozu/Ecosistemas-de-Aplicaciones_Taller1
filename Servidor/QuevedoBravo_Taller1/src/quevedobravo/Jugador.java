@@ -23,29 +23,38 @@ public class Jugador {
 		vida = 1;
 		ataque = new SoundFile(app, "swoosh.mp3");
 		
-		pj = new Gif[4];
-		for(int i = 0; i < pj.length; i++) {
+		pj = new Gif[6];
+		for(int i = 0; i < 4; i++) {
 			pj[i] = new Gif(app, "pj"+i+".gif");
 			pj[i].loop();
 		}
+		pj[4] = new Gif(app, "pj4.gif");
+		pj[5] = new Gif(app, "pj5.gif");
 	}
 	
 	public void pintar() {
 	
-		if(dir == 0) {
-			if(vel.mag()>0) {
-				app.image(pj[2], pos.x, pos.y);
+		if(!pj[4].isPlaying() && !pj[5].isPlaying()) {
+			if(dir == 0) {
+				if(vel.mag()>0) {
+					app.image(pj[2], pos.x, pos.y);
+				} else {
+					app.image(pj[0], pos.x, pos.y);
+				}
 			} else {
-				app.image(pj[0], pos.x, pos.y);
+				if(vel.mag()>0) {
+					app.image(pj[3], pos.x, pos.y);
+				} else {
+					app.image(pj[1], pos.x, pos.y);				
+				}
 			}
 		} else {
-			if(vel.mag()>0) {
-				app.image(pj[3], pos.x, pos.y);
+			if(dir == 0) {
+				app.image(pj[4], pos.x, pos.y);
 			} else {
-				app.image(pj[1], pos.x, pos.y);				
+				app.image(pj[5],  pos.x-33,  pos.y);
 			}
 		}
-		
 	}
 	
 	public void mover() {
@@ -58,9 +67,17 @@ public class Jugador {
 	}
 	
 	public void atacar() {
-		if(!ataque.isPlaying()) {
-			ataque.play();
-		}
+		if(dir == 0) {
+			if(!pj[4].isPlaying()) {
+				ataque.play();
+				pj[4].play();
+			}
+		} else {
+			if(!pj[5].isPlaying()) {
+				ataque.play();
+				pj[5].play();
+			}
+		}		
 	}
 	
 	public void setVel(PVector vel) {

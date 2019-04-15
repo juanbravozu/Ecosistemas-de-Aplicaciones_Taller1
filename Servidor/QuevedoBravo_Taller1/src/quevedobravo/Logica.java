@@ -28,15 +28,15 @@ public class Logica implements Observer {
 	public Logica(PApplet app) {
 		this.app = app;
 		
-		
-		pantalla = 2;
-		opacidad = 255;
-		fuente = app.loadFont("pixellari-30.vlw");
+		fuente = app.loadFont("pixellari-30.vlw");	
 		
 		app.textAlign(app.CENTER, app.TOP);
 		app.textFont(fuente);
 		app.background(0);
 		app.text("Cargando...", app.width/2, app.height/2);
+		
+		pantalla = 0;
+		opacidad = 255;		
 		
 		song1 = new SoundFile(app, "05 - Forbidden Steps.mp3");
 		song1.loop();
@@ -85,7 +85,6 @@ public class Logica implements Observer {
 					while(true) {
 						try {
 							opacidad -= 2;
-							System.out.println(opacidad);
 							if(opacidad <= 0) {
 								opacidad = 0;
 								break;

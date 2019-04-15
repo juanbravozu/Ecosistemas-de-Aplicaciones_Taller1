@@ -29,9 +29,6 @@ public class Mundo implements Observer {
 		
 		iniciado = false;
 		tiempo = 120;
-		app.textAlign(app.CENTER, app.TOP);
-		app.background(0);
-		app.text("Cargando...", app.width/2, app.height/2);
 		
 		jug = new Jugador(app);
 		
