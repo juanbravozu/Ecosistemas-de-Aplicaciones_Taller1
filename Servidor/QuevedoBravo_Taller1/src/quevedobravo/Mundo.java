@@ -1,5 +1,6 @@
 package quevedobravo;
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -11,6 +12,7 @@ public class Mundo implements Observer {
 
 	private PApplet app;
 	private boolean iniciado;
+	private boolean atacando;
 	private Comunicacion ref;
 	
 	/**
@@ -23,7 +25,7 @@ public class Mundo implements Observer {
 	private int nivel;
 	private int tiempo;
 	private Jugador jug;
-	private Enemigo[] enemigos;
+	private ArrayList<Enemigo> enemigos;
 	
 	public Mundo(PApplet app) {
 		this.app = app;
@@ -32,6 +34,7 @@ public class Mundo implements Observer {
 		tiempo = 120;
 		
 		jug = new Jugador(app);
+		atacando = false;
 		
 		ref = Comunicacion.getRef();
 		ref.addObserver(this);
@@ -48,23 +51,47 @@ public class Mundo implements Observer {
 			fondos[i] = app.loadImage("fondo"+i+".png");
 		}			
 		
-		enemigos = new Enemigo[3];
+		enemigos = new ArrayList<Enemigo>();
 		
-		for (int i = 0; i < enemigos.length; i++) {
-			enemigos[i] = new Slime(app, this);
-			enemigos[i].start();
+		for (int i = 0; i < 8; i++) {
+			Enemigo e = new Slime(app, this);
+			e.start();
+			enemigos.add(e);
 		}
 	}
 	
 	public void pintar() {
+		
+		if(atacando) {
+			for(int i = enemigos.size()-1; i >= 0; i--) {
+				Enemigo e = enemigos.get(i);
+				PVector enePos = e.getPos();
+				PVector jugPos = jug.getPos();
+				if(jug.getDir() == 0) {
+					if(enePos.x > jugPos.x+128 && enePos.x < jugPos.x+192 && enePos.y > jugPos.y+50 && enePos.y < jugPos.y + 128 && jug.getAtacarDer()) {
+						e.setVivo(false);
+						enemigos.remove(e);
+						atacando = false;
+					}
+				} else {
+					if(enePos.x < jugPos.x && enePos.x > jugPos.x-64 && enePos.y > jugPos.y+50 && enePos.y < jugPos.y + 128 && jug.getAtacarIzq()) {
+						e.setVivo(false);
+						enemigos.remove(e);
+						atacando = false;
+					}
+				}
+			}
+		}
+		
 		switch(nivel) {
 		case 1:
+			app.imageMode(app.CORNER);
 			app.image(fondos[1], 0, 0);
 			
-			for (int i = 0; i < enemigos.length; i++) {
-				enemigos[i].pintar();
+			for (int i = 0; i < enemigos.size(); i++) {
+				enemigos.get(i).pintar();
 			}
-			
+			app.imageMode(app.CORNER);
 			jug.pintar();
 			
 			app.image(fondos[2], 0, 0);
@@ -106,7 +133,11 @@ public class Mundo implements Observer {
 				
 			}
 			
-			if(mensaje[0].matches("A"))jug.atacar();
+			if(mensaje[0].matches("A")) {
+				if(jug.atacar()) {
+					atacando = true;
+				}
+			}
 		}
 		
 		

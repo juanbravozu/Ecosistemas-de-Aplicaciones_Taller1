@@ -18,7 +18,7 @@ public class Jugador {
 	
 	public Jugador(PApplet app) {
 		this.app = app;
-		pos = new PVector(app.width/2, app.height/2);
+		pos = new PVector(app.width/2, app.height-200);
 		vel = new PVector(0, 0);
 		dir = 0;
 		vida = 5;
@@ -69,21 +69,27 @@ public class Jugador {
 		}
 	}
 	
-	public void atacar() {
+	public boolean atacar() {
 		if(dir == 0) {
 			accion = true;
 			if(!pj[4].isPlaying()) {
 				ataque.play();
 				pj[4].play();
+				return true;
+			} else {
+				return false;
 			}
 		} else {
 			accion = true;
 			if(!pj[5].isPlaying()) {
 				ataque.play();
 				pj[5].play();
+				return true;
+			} else {
+				return false;
 			}
-		}		
-	}
+		}
+	} 
 	
 	public void setVel(PVector vel) {
 		this.vel = vel;
@@ -109,5 +115,23 @@ public class Jugador {
 		this.accion = accion;
 	}
 	
+	public int getDir() {
+		return dir;
+	}
 	
+	public boolean getAtacarDer() {
+		if(pj[4].currentFrame() == 2 || pj[4].currentFrame() == 3) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean getAtacarIzq() {
+		if(pj[5].currentFrame() == 2 || pj[5].currentFrame() == 3) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

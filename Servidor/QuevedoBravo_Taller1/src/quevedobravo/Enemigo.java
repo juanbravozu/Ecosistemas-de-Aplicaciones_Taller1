@@ -31,4 +31,18 @@ public abstract class Enemigo extends Thread {
 	public abstract void mover();
 	
 	public abstract void run();
+	
+	public PVector getPos() {
+		return pos;
+	}
+
+	public boolean isVivo() {
+		return vivo;
+	}
+
+	public void setVivo(boolean vivo) {
+		this.vivo = vivo;
+	}
+	
+	
 }
