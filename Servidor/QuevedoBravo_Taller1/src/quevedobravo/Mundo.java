@@ -23,6 +23,7 @@ public class Mundo implements Observer {
 	private int nivel;
 	private int tiempo;
 	private Jugador jug;
+	private Enemigo[] enemigos;
 	
 	public Mundo(PApplet app) {
 		this.app = app;
@@ -46,13 +47,26 @@ public class Mundo implements Observer {
 		for(int i = 0; i < fondos.length; i++) {
 			fondos[i] = app.loadImage("fondo"+i+".png");
 		}			
+		
+		enemigos = new Enemigo[3];
+		
+		for (int i = 0; i < enemigos.length; i++) {
+			enemigos[i] = new Slime(app, this);
+			enemigos[i].start();
+		}
 	}
 	
 	public void pintar() {
 		switch(nivel) {
 		case 1:
 			app.image(fondos[1], 0, 0);
+			
+			for (int i = 0; i < enemigos.length; i++) {
+				enemigos[i].pintar();
+			}
+			
 			jug.pintar();
+			
 			app.image(fondos[2], 0, 0);
 			app.fill(200, 0, 0);
 			app.rect(27, 16, jug.getVida()*43, 16);
@@ -69,7 +83,7 @@ public class Mundo implements Observer {
 		String mensaje[] = (String[]) arg1;
 		
 		if(iniciado) {
-			if(mensaje[0].matches("Mover")) {
+			if(mensaje[0].matches("Mover") && !jug.isAccion() && mensaje.length>1) {
 				if(Integer.parseInt(mensaje[2]) > 30) {
 					float ang = app.radians(Integer.parseInt(mensaje[1]));	
 					PVector vel = PVector.fromAngle(-ang);
@@ -107,4 +121,7 @@ public class Mundo implements Observer {
 		return iniciado;
 	}
 	
+	public Jugador getJugador() {
+		return jug;
+	}
 }

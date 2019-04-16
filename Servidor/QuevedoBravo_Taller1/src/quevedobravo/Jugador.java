@@ -14,14 +14,16 @@ public class Jugador {
 	private Gif[] pj;//0=QuietoDerecha 1=QuietoIzquierda 2=CaminandoDerecha 3=CaminandoIzquierda 4=AtacandoDerecha 5=AtacandoIzquierda
 	private SoundFile ataque;
 	private int vida;
+	private boolean accion;
 	
 	public Jugador(PApplet app) {
 		this.app = app;
 		pos = new PVector(app.width/2, app.height/2);
 		vel = new PVector(0, 0);
 		dir = 0;
-		vida = 1;
+		vida = 5;
 		ataque = new SoundFile(app, "swoosh.mp3");
+		accion = false;
 		
 		pj = new Gif[6];
 		for(int i = 0; i < 4; i++) {
@@ -35,6 +37,7 @@ public class Jugador {
 	public void pintar() {
 	
 		if(!pj[4].isPlaying() && !pj[5].isPlaying()) {
+			accion = false;
 			if(dir == 0) {
 				if(vel.mag()>0) {
 					app.image(pj[2], pos.x, pos.y);
@@ -68,11 +71,13 @@ public class Jugador {
 	
 	public void atacar() {
 		if(dir == 0) {
+			accion = true;
 			if(!pj[4].isPlaying()) {
 				ataque.play();
 				pj[4].play();
 			}
 		} else {
+			accion = true;
 			if(!pj[5].isPlaying()) {
 				ataque.play();
 				pj[5].play();
@@ -95,4 +100,14 @@ public class Jugador {
 	public void setVida(int vida) {
 		this.vida = vida;
 	}
+
+	public boolean isAccion() {
+		return accion;
+	}
+
+	public void setAccion(boolean accion) {
+		this.accion = accion;
+	}
+	
+	
 }
