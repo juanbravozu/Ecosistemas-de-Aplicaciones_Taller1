@@ -5,12 +5,14 @@ import java.util.Observer;
 
 import processing.core.PApplet;
 import processing.core.PFont;
+import processing.core.PImage;
 import processing.sound.*;
 
 public class Logica implements Observer {
 
 	private PApplet app;
 	private PFont fuente;
+	private PImage[] imagenes;
 	private Comunicacion ref;
 	private SoundFile song1;
 	private String ip;
@@ -24,6 +26,7 @@ public class Logica implements Observer {
 	private int pantalla;
 	private int opacidad;
 	private Mundo m;
+	private boolean transition;
 	
 	public Logica(PApplet app) {
 		this.app = app;
@@ -41,10 +44,18 @@ public class Logica implements Observer {
 		song1 = new SoundFile(app, "05 - Forbidden Steps.mp3");
 		song1.loop();
 		
+		imagenes = new PImage[3];
+		for (int i = 0; i < imagenes.length; i++) {
+			imagenes[i] = app.loadImage("imagen"+i+".png");
+		}
+		
 		ref = Comunicacion.getRef();
 		ref.addObserver(this);
 		ip = ref.getIp().getHostAddress();
 		m = new Mundo(app);
+		m.addObserver(this);
+		
+		transition = false;
 	}
 
 	public void pintar() {
@@ -61,16 +72,46 @@ public class Logica implements Observer {
 			
 		case 1:
 			app.fill(255, opacidad);
-			app.text("Existe una leyenda olvidada en el tiempo, una leyenda sobre un héroe que acabó con la oscuridad antes de que esta pudiera actuar. "+nombre+" es el nombre de este héroe.", 300, 100, 600, 700);
-			if(opacidad < 255)opacidad++;
+			app.text("En el reino lejano de Tal’Vastol se cuenta una vieja leyenda. Una historia legendaria sobre el mal que acechaba el mundo y los héroes que lo combatieron. Sin embargo, solo uno de los héroes se atrevió a viajar más allá, donde el bosque sagrado cubría todo y los viajeros desprevenidos desaparecían sin rastro alguno. Allí, desafió valientemente al mal corrupto y lo desterró para siempre.", 300, 150, 600, 700);
+			if(opacidad < 255 && !transition) {
+				opacidad++;
+				if(opacidad == 255) {
+					transition = true;
+				}
+			}
+			
+			app.fill(0, 255-opacidad);
+			app.image(imagenes[1], 800, app.height-60);
+			app.rect(790, app.height-61, 400, 60);
+			
 			break;
 			
 		case 2:
+			app.fill(255, opacidad);
+			app.text("Una leyenda olvidada en el tiempo. Un héroe que desafió el bosque y devolvió la paz al reino. "+nombre+" es el nombre de este héroe. Su historia se conoce como..." , 300, 250, 600, 700);
+			if(opacidad < 255 && !transition) {
+				opacidad++;
+				if(opacidad == 255) {
+					transition = true;
+				}
+			}
+			
+			app.fill(0, 255-opacidad);
+			app.image(imagenes[1], 800, app.height-60);
+			app.rect(790, app.height-61, 400, 60);
+			break;
+			
+		case 3:
+			
+			break;
+			
+		case 4:
 			if(!m.getIniciado()) {
 				m.setIniciado(true);
 			} else {
 				m.pintar();
 			}
+			break;
 		}
 	}
 
@@ -102,14 +143,38 @@ public class Logica implements Observer {
 				new Thread(()->{
 					while(true) {
 						try {
-							opacidad-=2;
-							System.out.println(opacidad);
+							if(opacidad<=255) {
+								opacidad-=2;
+								System.out.println("Está bajando");
+							}
 							if(opacidad<=0) {
+								System.out.println("Pasó");
 								opacidad = 0;
 								pantalla = 2;
+								transition = false;
 								break;
 							}
-							
+							Thread.sleep(17);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}	
+				}).start();
+			} else if(pantalla == 2) {
+				new Thread(()->{
+					while(true) {
+						try {
+							if(opacidad<=255) {
+								opacidad-=2;
+								System.out.println("Está bajando");
+							}
+							if(opacidad<=0) {
+								System.out.println("Pasó");
+								opacidad = 0;
+								pantalla = 3;
+								transition = false;
+								break;
+							}
 							Thread.sleep(17);
 						} catch (InterruptedException e) {
 							e.printStackTrace();

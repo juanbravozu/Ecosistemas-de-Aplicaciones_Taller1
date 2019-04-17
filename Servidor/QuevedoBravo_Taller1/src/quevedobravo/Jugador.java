@@ -11,10 +11,11 @@ public class Jugador {
 	private PVector pos;
 	private PVector vel;
 	private int dir; //0=Derecha 1=Izquierda
-	private Gif[] pj;//0=QuietoDerecha 1=QuietoIzquierda 2=CaminandoDerecha 3=CaminandoIzquierda 4=AtacandoDerecha 5=AtacandoIzquierda
+	private Gif[] pj;//0=QuietoDerecha 1=QuietoIzquierda 2=CaminandoDerecha 3=CaminandoIzquierda 4=AtacandoDerecha 5=AtacandoIzquierda 6=BloqueandoDerecha 7=BloqueandoIzquierda
 	private SoundFile ataque;
 	private int vida;
 	private boolean accion;
+	private boolean bloquear;
 	
 	public Jugador(PApplet app) {
 		this.app = app;
@@ -24,20 +25,24 @@ public class Jugador {
 		vida = 5;
 		ataque = new SoundFile(app, "swoosh.mp3");
 		accion = false;
+		bloquear = false;
 		
-		pj = new Gif[6];
+		pj = new Gif[8];
 		for(int i = 0; i < 4; i++) {
 			pj[i] = new Gif(app, "pj"+i+".gif");
 			pj[i].loop();
 		}
 		pj[4] = new Gif(app, "pj4.gif");
 		pj[5] = new Gif(app, "pj5.gif");
+		pj[6] = new Gif(app, "pj6.gif");
+		pj[7] = new Gif(app, "pj7.gif");
 	}
 	
 	public void pintar() {
 	
-		if(!pj[4].isPlaying() && !pj[5].isPlaying()) {
+		if(!pj[4].isPlaying() && !pj[5].isPlaying() && !pj[6].isPlaying() && !pj[7].isPlaying()) {
 			accion = false;
+			bloquear = false;
 			if(dir == 0) {
 				if(vel.mag()>0) {
 					app.image(pj[2], pos.x, pos.y);
@@ -51,13 +56,20 @@ public class Jugador {
 					app.image(pj[1], pos.x, pos.y);				
 				}
 			}
-		} else {
+		} else if(!pj[6].isPlaying() && !pj[7].isPlaying()){
 			if(dir == 0) {
 				app.image(pj[4], pos.x, pos.y);
 			} else {
 				app.image(pj[5],  pos.x-33,  pos.y);
 			}
+		} else {
+			if(dir == 0) {
+				app.image(pj[6], pos.x, pos.y);
+			} else {
+				app.image(pj[7],  pos.x,  pos.y);
+			}
 		}
+		
 	}
 	
 	public void mover() {
@@ -91,6 +103,17 @@ public class Jugador {
 		}
 	} 
 	
+	public void bloquear() {
+		
+		if(dir == 0) {
+			bloquear = true;
+			pj[6].play();
+		} else {
+			bloquear = true;
+			pj[7].play();
+		}
+	}
+	
 	public void setVel(PVector vel) {
 		this.vel = vel;
 	}
@@ -117,6 +140,10 @@ public class Jugador {
 	
 	public int getDir() {
 		return dir;
+	}
+	
+	public boolean isBloquear() {
+		return bloquear;
 	}
 	
 	public boolean getAtacarDer() {

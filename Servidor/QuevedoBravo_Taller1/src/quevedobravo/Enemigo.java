@@ -14,6 +14,7 @@ public abstract class Enemigo extends Thread {
 	protected Gif[] ene;
 	protected Mundo m;
 	protected Jugador j;
+	protected int vida;
 	protected boolean vivo;
 	
 	public Enemigo(PApplet app, Mundo m) {
@@ -21,7 +22,12 @@ public abstract class Enemigo extends Thread {
 		this.m = m;
 		j = m.getJugador();
 		vivo = true;
-		pos = new PVector(app.random(260, 760), app.random(300, 400));
+		int spawn = (int)app.random(2);
+		if(spawn == 0) {
+			pos = new PVector(100, app.random(350, 500));
+		} else {
+			pos = new PVector(1100, app.random(350, 500));
+		}
 		vel = new PVector(0, 0);
 		acc = new PVector(0, 0);
 	}
@@ -42,6 +48,14 @@ public abstract class Enemigo extends Thread {
 
 	public void setVivo(boolean vivo) {
 		this.vivo = vivo;
+	}
+
+	public int getVida() {
+		return vida;
+	}
+
+	public void setVida(int vida) {
+		this.vida = vida;
 	}
 	
 	
