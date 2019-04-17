@@ -103,13 +103,17 @@ public class Slime extends Enemigo {
 			
 			if(timerDaño == 0) {
 				if(pos.x > j.getPos().x+32 && pos.x < j.getPos().x+100 && pos.y > j.getPos().y+50 && pos.y < j.getPos().y+128) {
-					timerDaño = 150;
-					if(pos.x < j.getPos().x && !j.isBloquear() && j.getDir() != 1) {
-						j.setVida(j.getVida()-1);							
-					} else if(pos.x > j.getPos().x && !j.isBloquear() && j.getDir() != 0) {
+					if(!j.isBloquear()) {
 						j.setVida(j.getVida()-1);
 						timerDaño = 150;
-					}					
+					} else {
+						if(pos.x <= j.getPos().x && j.getDir() != 1) {
+							j.setVida(j.getVida()-1);
+						} else if(pos.x > j.getPos().x && !j.isBloquear() && j.getDir() != 0) {
+							j.setVida(j.getVida()-1);
+						}		
+						timerDaño = 150;
+					}
 				}
 			}
 			

@@ -35,14 +35,15 @@ public class MainActivity extends AppCompatActivity  {
                 final String nombrePj = nombre.getText().toString();
                 final String direccion = ip.getText().toString();
 
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
+                if(nombrePj != null) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
 
                             ref = Comunicacion.getRef(direccion);
                             try {
                                 Thread.sleep(500);
-                                ref.enviar("Crear: :"+nombrePj);
+                                ref.enviar("Crear: :" + nombrePj);
                                 Intent i = new Intent(MainActivity.this, Control.class);
                                 startActivity(i);
                             } catch (InterruptedException e) {
@@ -50,9 +51,9 @@ public class MainActivity extends AppCompatActivity  {
                             }
 
 
-                    }
-                }).start();
-
+                        }
+                    }).start();
+                }
             }
         });
     }

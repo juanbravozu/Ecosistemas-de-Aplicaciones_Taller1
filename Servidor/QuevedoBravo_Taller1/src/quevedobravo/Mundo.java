@@ -137,7 +137,7 @@ public class Mundo extends Observable implements Observer {
 			}
 			timerEnemigo = 420;
 			oleada++;
-			if(oleada % 3 == 0) nuevoEnemigo++;
+			if(oleada % 2 == 0) nuevoEnemigo++;
 		}
 		
 		if(timerEnemigo > 0) {
@@ -195,6 +195,7 @@ public class Mundo extends Observable implements Observer {
 			if(mensaje[0].matches("A")) {
 				if(jug.atacar()) {
 					atacando = true;
+					System.out.println("Valida A");
 				}
 			}
 			
