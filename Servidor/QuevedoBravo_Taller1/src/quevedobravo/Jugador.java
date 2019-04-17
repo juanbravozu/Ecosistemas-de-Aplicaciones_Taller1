@@ -22,7 +22,7 @@ public class Jugador {
 		pos = new PVector(app.width/2, app.height-200);
 		vel = new PVector(0, 0);
 		dir = 0;
-		vida = 1;
+		vida = 5;
 		ataque = new SoundFile(app, "swoosh.mp3");
 		accion = false;
 		bloquear = false;

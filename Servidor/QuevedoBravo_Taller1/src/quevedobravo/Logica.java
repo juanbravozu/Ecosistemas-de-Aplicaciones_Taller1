@@ -3,6 +3,7 @@ package quevedobravo;
 import java.util.Observable;
 import java.util.Observer;
 
+import gifAnimation.Gif;
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PImage;
@@ -15,8 +16,11 @@ public class Logica implements Observer {
 	private PApplet app;
 	private PFont fuente;
 	private PImage[] imagenes;
+	private Gif perder;
+	private Gif menu;
 	private Comunicacion ref;
-	private SoundFile song1;
+	private SoundFile[] songs;
+	private float volumen;
 	private String ip;
 	private String nombre;
 	
@@ -46,12 +50,20 @@ public class Logica implements Observer {
 		opacidad = 255;		
 		opacidadDos = 0;
 		
-		song1 = new SoundFile(app, "05 - Forbidden Steps.mp3");
+		songs = new SoundFile[2];
+		songs[0] = new SoundFile(app, "cancionJuego.mp3");
+		songs[1] = new SoundFile(app, "cancionMenu.mp3");
+		songs[1].loop();
+		volumen = 0.0f;
 		
-		imagenes = new PImage[5];
+		imagenes = new PImage[7];
 		for (int i = 0; i < imagenes.length; i++) {
 			imagenes[i] = app.loadImage("imagen"+i+".png");
 		}
+		perder = new Gif(app, "pollo.gif");
+		perder.loop();
+		menu = new Gif(app, "menu.gif");
+		menu.loop();
 		
 		ref = Comunicacion.getRef();
 		ref.addObserver(this);
@@ -108,7 +120,7 @@ public class Logica implements Observer {
 			
 		case 3:
 			app.fill(0, 255-opacidad);
-			app.image(imagenes[0], 0, 0);
+			app.image(menu, 0, 0);
 			app.rect(0, 0, 1200, 700);
 			
 			
@@ -135,10 +147,25 @@ public class Logica implements Observer {
 				m.setIniciado(true);
 			} else {
 				m.pintar();
-				if(!song1.isPlaying()) {
-					song1.play();
+				
+				if(!songs[0].isPlaying()) {
+					songs[0].loop();
+				}
+				
+				if(volumen < 1.0f) {
+					songs[0].amp(volumen);
+					volumen += 0.01f;
+					songs[1].amp(1-volumen);
+				} else {
+					songs[0].amp(1);
+					if(songs[1].isPlaying()) {
+						songs[1].stop();
+					}
 				}
 			}
+			
+			app.image(imagenes[5], 1000, 10);
+			app.image(imagenes[6], 1000, 55);
 			break;
 			
 		case 5:
@@ -170,13 +197,13 @@ public class Logica implements Observer {
 			}
 			
 			app.fill(0, 255-opacidad);
-			app.image(imagenes[3], 0, 0);
+			app.image(perder, 0, 0);
 			app.image(imagenes[4], 780, 480);
 			app.rect(0, 0, 1200, 700);
 			
 			app.fill(255, opacidad);
 			app.text("PERDISTE" , 920, 220);
-			app.text("La leyenda era solo un cuento de hadas" , 800, 250, 260, 300);
+			app.text("La leyenda era solo un cuento de hadas" , 800, 270, 260, 300);
 			app.text("Puntos: "+puntos, 920, 400);
 			
 			if(opacidad < 255 && !transition) {
