@@ -6,7 +6,6 @@ import processing.core.PVector;
 
 public class Slime extends Enemigo {
 
-	private PVector posAnterior;
 	private float maxF;
 	private float maxVel;
 	private float xoff;
@@ -23,14 +22,12 @@ public class Slime extends Enemigo {
 		maxF = 0.1f;
 	    maxVel = 1.0f;
 	    xoff = app.random(2);
-	    xoff = app.random(2);
 	    ene = new Gif[2];
 	    tam = 60;
 	    desAcc = 0.1f;
 	    vida = 2;
 	    dirGolpe = 0;
 	    golpeado = false;
-	    posAnterior = new PVector(pos.x, pos.y);
 	    
 	    for (int i = 0; i < ene.length; i++) {
 			ene[i] = new Gif(app, "slime"+i+".gif");
@@ -52,7 +49,7 @@ public class Slime extends Enemigo {
 		
 		if(app.dist(j.getPos().x+64, j.getPos().y+64, pos.x, pos.y) > 250) {
 			xoff += .006f;
-		    yoff += .005;
+		    yoff += .005f;
 		    
 		    try {
 		    	obj = new PVector(150+(app.noise(xoff)*900), 200+(app.noise(yoff)*390));
@@ -70,10 +67,8 @@ public class Slime extends Enemigo {
 		if(app.dist(j.getPos().x+64, j.getPos().y+64, pos.x, pos.y) > 60) {
 			
 			PVector deseado = PVector.sub(obj, pos);
-			float magD = deseado.mag();
 			
 			deseado.mult(maxVel);
-			
 			
 		    PVector fuerza = PVector.sub(deseado, vel);
 		    fuerza.limit(maxF);
@@ -86,7 +81,6 @@ public class Slime extends Enemigo {
 		}  else {
 			
 			if(timerAtacar == 0) {
-				posAnterior = new PVector(pos.x, pos.y);
 				timerAtacar = 150;
 			    PVector deseado = PVector.sub(obj, pos);
 			    if(deseado.mag()>100) {

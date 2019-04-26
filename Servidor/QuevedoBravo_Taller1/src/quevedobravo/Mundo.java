@@ -22,7 +22,6 @@ public class Mundo extends Observable implements Observer {
 	 */
 	private PImage[] fondos;
 	private PImage[] ui;
-	private int nivel;
 	private int tiempo;
 	private Jugador jug;
 	private ArrayList<Enemigo> enemigos;
@@ -35,15 +34,13 @@ public class Mundo extends Observable implements Observer {
 		this.app = app;
 		
 		iniciado = false;
-		tiempo = 120;
+		tiempo = 120; //120 para dificultad original. Reducir para hacer más fácil el juego
 		
 		jug = new Jugador(app);
 		atacando = false;
 		
 		ref = Comunicacion.getRef();
 		ref.addObserver(this);
-		
-		nivel = 1;
 		
 		fondos = new PImage[3];
 		ui = new PImage[2];
@@ -107,28 +104,24 @@ public class Mundo extends Observable implements Observer {
 			}
 		}
 		
-		switch(nivel) {
-		case 1:
-			app.imageMode(app.CORNER);
-			app.image(fondos[1], 0, 0);
-			
-			for (int i = 0; i < enemigos.size(); i++) {
-				enemigos.get(i).pintar();
-			}
-			app.imageMode(app.CORNER);
-			jug.pintar();
-			
-			app.image(fondos[2], 0, 0);
-			app.fill(200, 0, 0);
-			app.rect(27, 16, jug.getVida()*43, 16);
-			app.image(ui[0], 0, 10);
-			app.fill(50, 84, 97);
-			app.rect(27,46, app.map(tiempo, 0, 120, 0, 212), 16);
-			app.image(ui[1], 0, 40);
-			
-			break;
-		}
+		app.imageMode(app.CORNER);
+		app.image(fondos[1], 0, 0);
 		
+		for (int i = 0; i < enemigos.size(); i++) {
+			enemigos.get(i).pintar();
+		}
+		app.imageMode(app.CORNER);
+		jug.pintar();
+		
+		app.image(fondos[2], 0, 0);
+		app.fill(200, 0, 0);
+		app.rect(27, 16, jug.getVida()*43, 16);
+		app.image(ui[0], 0, 10);
+		app.fill(50, 84, 97);
+		app.rect(27,46, app.map(tiempo, 0, 120, 0, 212), 16);
+		app.image(ui[1], 0, 40);
+			
+	
 		if(timerEnemigo == 0) {
 			for(int i = 0; i < nuevoEnemigo; i++) {
 				Enemigo e = new Slime(app, this);
@@ -170,7 +163,7 @@ public class Mundo extends Observable implements Observer {
 		
 		if(iniciado) {
 			if(mensaje[0].matches("Mover") && !jug.isAccion() && !jug.isBloquear() && mensaje.length>1) {
-				if(Integer.parseInt(mensaje[2]) > 30) {
+				if(mensaje.length>1 && Integer.parseInt(mensaje[2]) > 30) {
 					float ang = app.radians(Integer.parseInt(mensaje[1]));	
 					PVector vel = PVector.fromAngle(-ang);
 					
@@ -195,7 +188,6 @@ public class Mundo extends Observable implements Observer {
 			if(mensaje[0].matches("A")) {
 				if(jug.atacar()) {
 					atacando = true;
-					System.out.println("Valida A");
 				}
 			}
 			
@@ -205,7 +197,7 @@ public class Mundo extends Observable implements Observer {
 		}
 		
 		
-		System.out.println(mensaje[0]);
+//		System.out.println(mensaje[0]);
 	}
 	
 	public void setIniciado(boolean i) {
